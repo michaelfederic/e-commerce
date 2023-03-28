@@ -5,8 +5,9 @@ import { MainHomeComponent } from './main-home/main-home.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 
 const routes: Routes = [
-  {path: '', component: MainHomeComponent},
-  {path: 'product', component: ProductPageComponent },
+  { path: '', redirectTo: '/OneStopShop', pathMatch: 'full'},
+  {path: 'OneStopShop', component: MainHomeComponent},
+  {path: 'product/details/:id', component: ProductPageComponent },
   {path: 'checkout', component: CheckoutComponent}
 ];
 

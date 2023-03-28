@@ -113,7 +113,7 @@
   <div class="container-fluid">
 
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#">Categories:</a>
+    <!-- <a class="navbar-brand" href="#">Categories:</a> -->
 
     <!-- Toggle button -->
     <button 
@@ -133,24 +133,27 @@
 
         <!-- Link -->
         <li class="nav-item acitve">
-          <a class="nav-link text-white" href="#">All</a>
+          <a class="nav-link text-white" routerLink="" (click)="getItems('all')" >All</a>
         </li>
         <li class="nav-item">
-              <a class="nav-link text-white" href="#">Shirts</a>
+              <a class="nav-link text-white" routerLink="" (click)="getItems('men\'s clothing')">Men</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">Sport wears</a>
+              <a class="nav-link text-white" routerLink="" (click)="getItems('women\'s clothing')">Women</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">Outwears</a>
+              <a class="nav-link text-white" routerLink="" (click)="getItems('jewelery')">Jewelery</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" routerLink=""(click)="getItems('electronics')" >Electronics</a>
+              </li>
 
       </ul>
 
       <!-- Search -->
-      <form class="w-auto py-1" style="max-width: 12rem">
-        <input type="search" class="form-control rounded-0" placeholder="Search" aria-label="Search">
-      </form>
+      <div class="w-auto py-1" style="max-width: 12rem">
+        <input type="search" #key ngModel (change)="search(key.value)" class="form-control rounded-0" placeholder="Search" aria-label="Search">
+      </div>
 
     </div>
   </div>
@@ -162,14 +165,14 @@
   <section>
   <div class="text-center">
     <div class="row">
-      
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card">
+      <div *ngFor="let item of currentItems" class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100" >
           <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
             data-mdb-ripple-color="light">
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg"
-              class="w-100" />
-            <a href="#!">
+            <img [src]="item.image"
+              class="w-100"
+              width="120" />
+            <a routerLink="/product/details/{{item.id}}">
               <div class="mask">
                 <div class="d-flex justify-content-start align-items-end h-100">
                   <h5><span class="badge bg-dark ms-2">NEW</span></h5>
@@ -182,16 +185,15 @@
           </div>
           <div class="card-body">
             <a href="" class="text-reset">
-              <h5 class="card-title mb-2">Denim shirt</h5>
+              <h5 class="card-title mb-2 text-muted" style="font-size: 16px;">{{item.title}}</h5>
             </a>
-            <a href="" class="text-reset ">
-              <p>Shirt</p>
-            </a>
-            <h6 class="mb-3 price">120$</h6>
+            <h6 class="mb-3 price" style="font-size: 20px;">{{item.price | currency}}</h6>
           </div>
         </div>
       </div>
 
+      
+<!-- 
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card">
           <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
@@ -273,10 +275,10 @@
             </h6>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card">
@@ -377,12 +379,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
   
 <!-- Pagination -->
-  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+  <!-- <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
   <ul class="pagination">
     <li class="page-item disabled">
       <a class="page-link" href="#" aria-label="Previous">
@@ -400,7 +402,7 @@
       </a>
     </li>
   </ul>
-</nav>  
+</nav>   -->
 <!-- Pagination -->  
 </div>
 </main>
