@@ -8,12 +8,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.example.ecommerceapp.entity.Customer;
 import com.example.ecommerceapp.exception.ResourceNotFoundException;
 import com.example.ecommerceapp.repository.CustomerRepository;
 
 //load user from the database and return user details
+@Service
 public class CustomerUserDetails implements UserDetailsService{
 	
 	@Autowired

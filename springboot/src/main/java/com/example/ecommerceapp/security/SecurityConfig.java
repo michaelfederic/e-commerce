@@ -3,12 +3,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +18,11 @@ public class SecurityConfig {
 	
 	@Autowired
 	CustomerUserDetails customerUserDetails;
+	
+	@Autowired
+	private JwtTokenFilter jwtTokenFilter;
+	
+	
 	
 	/* AUTHENTICATION
 	 * This method configures the DaoAuthenticationProvider to use CustomerUserDetails as the UserDetailsService and the 
@@ -55,6 +62,10 @@ public class SecurityConfig {
 		//configuring the authentication provider for Spring Security.
 		http
 			.authenticationProvider(authenticationProvider());
+		
+		//configure the jwt filter
+		http
+			.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
 	}
