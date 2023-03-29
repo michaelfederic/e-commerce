@@ -6,21 +6,26 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="payment_information")
 public class PaymentInformation {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer paymentId;
-	private String nameoOnCard;
+	private String nameOnCard;
 	private Long creditCardNumber;
 	private String expirationDate;
-	private Short CVV;
+	private Short cvv;
 	@Enumerated(EnumType.STRING)
 	private CreditCardType paymentType;
 	@OneToOne(mappedBy="paymentInformation")

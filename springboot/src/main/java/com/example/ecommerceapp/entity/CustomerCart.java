@@ -11,14 +11,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="customer_cart")
 public class CustomerCart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String cartId;
+	private Integer cartId;
 	
 	@OneToOne(mappedBy="customerCart")
     private Customer customer;
