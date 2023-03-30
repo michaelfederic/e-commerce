@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-menu-navbar',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu-navbar.component.css']
 })
 export class MenuNavbarComponent {
+  constructor(private modalService: NgbModal){}
 
+  openFullscreen(content: any){
+    this.modalService.open(content, {fullscreen: true})
+  }
 }
