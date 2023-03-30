@@ -18,11 +18,11 @@ import lombok.NoArgsConstructor;
 public class CustomerCartDTO {
     
     // The unique identifier for the cart
-	@NotNull(message="{customer.cart.cartId.null}")
+//	@NotNull(message="{customer.cart.cartId.null}")
 	private Integer cartId;
     
     // The unique identifier for the customer
-	@NotNull(message="{customer.cart.customer.null}")
+//	@NotNull(message="{customer.cart.customer.null}")
     private Integer customer;
     
     // The list of products in the cart, represented as a list of ProductDTO objects

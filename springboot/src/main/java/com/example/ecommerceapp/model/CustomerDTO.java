@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.example.ecommerceapp.entity.Customer;
-import com.example.ecommerceapp.entity.CustomerCart;
-import com.example.ecommerceapp.entity.OrderDetails;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,17 +20,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CustomerDTO {
 	private Integer customerId;
-	@NotNull(message="{customer.username.null}")
-	@Pattern(regexp="^[\\\\w][\\\\w]{0,9}$", message="{customer.username.invalid}")
+	@NotEmpty(message="{customer.username.null}")
+	@Pattern(regexp="^[_A-Za-z0-9][A-Za-z0-9]{0,19}$", message="{customer.username.invalid}")
 	private String username;
+	
 	@Email(message="{customer.email.invalid}")
 	private String email;
-	@NotNull(message="{customer.password.null}")
+	
+	@NotEmpty(message="{customer.password.null}")
 	private String password;
-	@NotNull(message="{customer.confirm.password.null}")
-	private String confirmPassword;
+	
 	private CustomerCartDTO customerCartDTO;
+	
 	private List<OrderDetailsDTO> orderDetailsDTOs;
+	
     private List<GrantedAuthority> authorities;
     
     public static CustomerDTOBuilder entityToDto(Customer customer) {

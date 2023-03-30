@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.ecommerceapp.entity.Product;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +19,20 @@ public class ProductDTO {
 	
 	@NotNull(message="{product.id.null}")
 	private Integer id;
-	@NotNull(message="{product.title.null}")
+	
+	@NotEmpty(message="{product.title.null}")
     private String title;
+	
 	@NotNull(message="{product.price.null}")
     private Integer price;
-	@NotNull(message="{product.category.null}")
+	
+	@NotEmpty(message="{product.category.null}")
     private String category;
-	@NotNull(message="{product.description.null}")
+	
+	@NotEmpty(message="{product.description.null}")
     private String description;
-	@NotNull(message="{product.image.null}")
+	
+	@NotEmpty(message="{product.image.null}")
     private String image;
 	
 	//convert from entity to dto

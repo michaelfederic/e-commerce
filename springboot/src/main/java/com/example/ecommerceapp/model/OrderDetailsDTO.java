@@ -3,11 +3,9 @@ package com.example.ecommerceapp.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.example.ecommerceapp.entity.Customer;
 import com.example.ecommerceapp.entity.OrderDetails;
 import com.example.ecommerceapp.entity.OrderStatus;
-import com.example.ecommerceapp.entity.PaymentInformation;
-import com.example.ecommerceapp.entity.Product;
+
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderDetailsDTO {
-	@NotNull(message="{order.orderId.null}")
+//	@NotNull(message="{order.orderId.null}")
 	private Integer orderId;
 
 	private Integer customer;
@@ -36,13 +34,11 @@ public class OrderDetailsDTO {
 	@NotNull(message= "{order.payment.null}")
 	private PaymentInformationDTO paymentInformationDTO;
 
-	@NotNull(message="{order.status.null}")
+//	@NotNull(message="{order.status.null}")
 	private OrderStatus status;
-
-	@NotNull(message="{order.dateCreated.null}")
+	
 	private LocalDateTime dateCreated;
-
-	@NotNull(message="{order.dateUpdated.null}")
+	
 	private LocalDateTime dateUpdated;
 	
 	public static OrderDetailsDTOBuilder entityToDto(OrderDetails orderDetails) {

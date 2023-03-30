@@ -65,6 +65,7 @@ public class ExceptionController {
         }
     }
     
+ // FOR VALIDATION IN CONTROLLER
  // Handles validation exceptions for MethodArgumentNotValidException and ConstraintViolationException
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public ResponseEntity<ErrorDetails> handleValidationException(Exception exception) {

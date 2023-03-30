@@ -15,19 +15,19 @@ import com.example.ecommerceapp.entity.Customer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 
 @Service
 public class JwtTokenService {
 
-    // The secret key used to sign JWTs
-    private final String jwtSecret;
+	// The secret key used to sign JWTs
+	private final SecretKey jwtSecret;
 
-    public JwtTokenService(@Value("${e-commerce.app.secret}") String jwtSecret) {
-        this.jwtSecret = jwtSecret;
-    }
-
+	public JwtTokenService() {
+	    this.jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+	}
     // Generate a JWT for the given authentication object
     public String generateToken(Authentication authentication) {
         // Get the customer object from the authentication
@@ -39,8 +39,8 @@ public class JwtTokenService {
         // Set the token expiration time to one hour from now
         Date validity = new Date(now.getTime() + 3600000);
 
-        // Create a secret key from the JWT secret string
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+      
+       
         
         // Build the JWT with the customer's username as the subject, the issue time as the current time,
         // the expiration time as one hour from now, and sign it with the secret key
@@ -48,7 +48,8 @@ public class JwtTokenService {
                 .setSubject(customer.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(key)
+                // Create a secret key from the JWT secret string
+                .signWith(jwtSecret)
                 .compact();
     }
 
@@ -57,7 +58,7 @@ public class JwtTokenService {
         try {
             // Parse the JWT and verify its signature using the secret key
             Jwts.parserBuilder()
-                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
+                    .setSigningKey(jwtSecret)
                     .build()
                     .parseClaimsJws(token);
             // If the JWT is valid, return true
@@ -72,7 +73,7 @@ public class JwtTokenService {
     public String getUsernameFromToken(String token) {
         // Parse the JWT and verify its signature using the secret key, then extract the claims
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
+                .setSigningKey(jwtSecret)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

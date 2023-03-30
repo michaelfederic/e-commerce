@@ -7,6 +7,7 @@ import com.example.ecommerceapp.entity.CreditCardType;
 import com.example.ecommerceapp.entity.OrderDetails;
 import com.example.ecommerceapp.entity.PaymentInformation;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,13 +22,13 @@ public class PaymentInformationDTO {
 	
 	private Integer paymentId;
 
-	@NotNull(message="{payment.nameOnCard.null}")
+	@NotEmpty(message="{payment.nameOnCard.null}")
 	private String nameOnCard;
 
 	@NotNull(message="{payment.creditCardNumber.null}")
 	private Long creditCardNumber;
 
-	@NotNull(message="{payment.expirationDate.null}")
+	@NotEmpty(message="{payment.expirationDate.null}")
 	private String expirationDate;
 
 	@NotNull(message="{payment.cvv.null}")

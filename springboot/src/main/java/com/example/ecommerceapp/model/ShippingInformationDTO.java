@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ShippingInformationDTO {
-	@NotNull(message="{shipping.shippingId.null}")
+//	@NotNull(message="{shipping.shippingId.null}")
 	private Integer shippingId;
 
 	@NotNull(message="{shipping.recipientName.null}")
