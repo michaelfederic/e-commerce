@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,12 +49,11 @@ public class OrderDetails {
     @OneToOne
     @JoinColumn(name="payment_id")
     private PaymentInformation paymentInformation;
+    
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     
 }
 
-enum OrderStatus {
-	ACTIVE, COMPLETED
-}

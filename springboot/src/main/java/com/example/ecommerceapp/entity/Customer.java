@@ -7,7 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +32,7 @@ public class Customer implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer customerId;
+	@Column(unique = true)
 	private String username;
 	private String email;
 	private String password;
@@ -38,7 +44,9 @@ public class Customer implements UserDetails{
 	@OneToMany(mappedBy="customer")
 	private List<OrderDetails> orders;
 	
-	private List<GrantedAuthority> authorities;
+	@ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private List<GrantedAuthority> authorities;
 	
 	public Customer(String username, String password, List<GrantedAuthority> authorities) {
 		this.username= username;

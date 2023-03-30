@@ -33,6 +33,4 @@ public class PaymentInformation {
 	
 }
 
-enum CreditCardType{
-	DEBIT_CARD, CREDIT_CARD, PAYPAL
-}
+
