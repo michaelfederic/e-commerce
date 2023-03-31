@@ -49,7 +49,7 @@
         <!-- Icon -->
         <a class="nav-link me-3" routerLink="" (click)="openFullscreen(content)" >
           <i class="fas fa-shopping-cart"></i>
-          <span class="badge rounded-pill badge-notification bg-danger">1</span>
+          <span *ngIf="itemsInCart" class="badge rounded-pill badge-notification bg-danger">{{itemsInCart}}</span>
         </a>
         <a class="nav-link me-3" href="#">
           <i class="far fa-user"></i>
@@ -71,14 +71,33 @@
   <!-- Navbar -->
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">Your shopping cart</h4>
+      <h4 class="modal-title">Your shopping cart <h5>Pre-tax Total: {{totalCost | currency}}</h5></h4>
+      
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-      <p>hello</p>
+      <div *ngFor="let item of shoppingCart" class="list-group">
+        <div class="list-group-item list-group-item-action d-flex flex-row align-items-center justify-content-between ">
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <div>
+              <img [src]="item.image" [alt]="item.title" width="130px" height="130px">
+            </div>
+            <div class="pl-3">
+              <h5>{{item.title}}</h5>
+              <h6>{{item.price|currency}}</h6>
+            </div>
+          </div>
+          <div>
+            <a routerLink="" style="color: rgb(131, 129, 129); opacity: 50%;">
+              <i class="fa-regular fa-trash-can fa-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
    
     <div class="modal-footer">
+      <button type="button" class="btn btn-dark">CheckOut</button>
       <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
     </div>
   </ng-template>

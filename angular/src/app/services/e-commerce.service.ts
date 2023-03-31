@@ -24,5 +24,35 @@ export class ECommerceService {
     return this.http.get<Product>(`https://fakestoreapi.com/products/${productId}`)
   }
 
+  initializeShoppingCart(){
+    //create a shoppingCart inside session storage
+    if(!sessionStorage.getItem('shoppingCart')){
+      var shoppingCart: Product[] = [];
+      sessionStorage.setItem('shoppingCart',JSON.stringify(shoppingCart))
+      sessionStorage.setItem('totalCost', '0');
+    }
+  }
 
+  addToShoppingCart(product: Product){
+    //get cart from session storage
+    const cart = JSON.parse(sessionStorage.getItem('shoppingCart') || '[]');
+
+    //add item to cart
+    cart.push(product);
+    sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+
+    //convert from string to number total cost
+    var totalCost = Number( sessionStorage.getItem('totalCost'));
+
+    //add product price to total cost
+    totalCost+=product.price;
+
+
+    sessionStorage.setItem('totalCost', String(totalCost));
+  }
+
+  deleteFromShoppingCart(product: Product){
+    const cart = JSON.parse(sessionStorage.getItem('shoppingCart') || '[]');
+
+  }
 }

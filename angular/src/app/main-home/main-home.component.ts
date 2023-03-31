@@ -9,12 +9,15 @@ import { ECommerceService } from '../services/e-commerce.service';
 })
 export class MainHomeComponent implements OnInit{
   currentItems: Product[] =[]
-
+  
   constructor(private e_service: ECommerceService){}
 
   ngOnInit(): void {
     this.getItems('all')
+    //if shoppingCart does not exist inside sesssionStorage, 
+    
   }
+  
 
   //retrieve list of items from service layer
   getItems(category: string){

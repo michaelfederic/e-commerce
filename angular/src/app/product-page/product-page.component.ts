@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
 import { ECommerceService } from '../services/e-commerce.service';
-
+import { MenuNavbarComponent } from '../menu-navbar/menu-navbar.component';
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
@@ -11,6 +11,8 @@ import { ECommerceService } from '../services/e-commerce.service';
 export class ProductPageComponent implements OnInit  {
   product: Product | undefined;
   products: Product[] =[];
+  @ViewChild(MenuNavbarComponent) child: MenuNavbarComponent | undefined;
+
    constructor(
     private route: ActivatedRoute,
     private e_service: ECommerceService,
@@ -28,7 +30,6 @@ export class ProductPageComponent implements OnInit  {
    for (let i = 0; i < 3; i++) {
     this.generateRandomProduct();
     }
-    
   }
 
    getProductDetails(){
@@ -38,16 +39,20 @@ export class ProductPageComponent implements OnInit  {
       const id = Number(params.get('id'));
 
        //retrieve the details of the product
-      this.e_service.getProductDetails(id).subscribe({
-        next: (data: Product)=>{
-          this.product = data;
-          console.log(this.product)
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
+       this.e_service.getProductDetails(id).subscribe({
+        next: (product: Product) => {
+          this.product = product;
+          
+          //scroll to the top
+          window.scrollTo({top: 0, behavior: 'smooth'});
         },
-        error: (error: Error) => {console.error(error)},
-        complete: ()=>{console.log('product retrieved')}
-
-      })
+        error: (error: Error) => {
+          console.error(error);
+        },
+        complete: () => {
+          console.log('Product retrieval complete');
+        }
+      });
     })
 
    
@@ -66,5 +71,17 @@ export class ProductPageComponent implements OnInit  {
       complete: ()=>{console.log('product retrieved')}
 
     })
+   }
+
+   addToCart(product: Product){
+  
+   this.e_service.addToShoppingCart(product);
+    
+    //re render the menu child to show the updated cart
+    this.child?.ngOnInit();
+   }
+
+   deleteFromCart(product: Product){
+
    }
 }
