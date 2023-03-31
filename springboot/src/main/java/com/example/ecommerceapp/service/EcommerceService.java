@@ -9,4 +9,5 @@ public interface EcommerceService {
 	
 	public ResponseMessage authenticate(CustomerDTO customerDTO);
 	public ResponseMessage register(RegisterCustomerDTO customerDTO);
+	public CustomerDTO getDetails(String username);
 }

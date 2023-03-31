@@ -11,11 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ecommerceapp.entity.Customer;
 import com.example.ecommerceapp.exception.CustomerException;
+import com.example.ecommerceapp.exception.ResourceNotFoundException;
 import com.example.ecommerceapp.model.CustomerDTO;
 import com.example.ecommerceapp.model.RegisterCustomerDTO;
 import com.example.ecommerceapp.model.ResponseMessage;
 import com.example.ecommerceapp.repository.CustomerRepository;
 import com.example.ecommerceapp.security.JwtTokenService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional
@@ -42,7 +46,8 @@ public class EcommerceServiceImpl implements EcommerceService{
 
 	    // If authentication is successful, generate a JWT token for the customer
 	    String jwtToken = jwtTokenService.generateToken(authentication);
-
+	    
+	  
 	    // Return the JWT token in a ResponseMessage object
 	    return ResponseMessage.createWithToken(jwtToken);
 	}
@@ -73,6 +78,20 @@ public class EcommerceServiceImpl implements EcommerceService{
 		
 		return ResponseMessage.createWithMessage("success");
 	}
+
+	@Override
+	public CustomerDTO getDetails(String username) {
+		//get user from repository, throw exception if not found
+		Customer customer = customerRepository
+				.findByUsername(username)
+				.orElseThrow(()-> new ResourceNotFoundException("Customer does not exist"));
+		
+		//convert entity to dto then build instance of CustomerDTO class since it is in CustomerDTOBuilder format
+		return CustomerDTO.entityToDto(customer).build();
+	}
+	
+	
+	
 	
 	
 	

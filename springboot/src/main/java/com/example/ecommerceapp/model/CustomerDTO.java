@@ -54,10 +54,10 @@ public class CustomerDTO {
                 .customerId(customer.getCustomerId())
                 .username(customer.getUsername())
                 .email(customer.getEmail())
-                .password(customer.getPassword())
+                .password(null)
                 .customerCartDTO(customerCartDTO)
                 .orderDetailsDTOs(orderDetailsDTOs)
-                .authorities((List<GrantedAuthority>) customer.getAuthorities());
+                .authorities(null);
     }
 	
 }

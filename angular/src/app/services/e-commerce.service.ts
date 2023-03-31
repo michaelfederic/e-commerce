@@ -6,7 +6,7 @@ import { Product } from '../models/product';
   providedIn: 'root'
 })
 export class ECommerceService {
-
+  jwtToken: string | undefined;
   constructor(private http: HttpClient) { }
 
   // return list of items depending on category
@@ -51,8 +51,19 @@ export class ECommerceService {
     sessionStorage.setItem('totalCost', String(totalCost));
   }
 
+  //TODO
   deleteFromShoppingCart(product: Product){
     const cart = JSON.parse(sessionStorage.getItem('shoppingCart') || '[]');
 
+  }
+
+
+  login(form: any){
+    return this.http.post('http://localhost:8080/api/auth/login', form, {responseType: 'json'})
+  
+  }
+
+  getJwtToken(){
+    return this.jwtToken;
   }
 }
