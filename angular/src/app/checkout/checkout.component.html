@@ -14,13 +14,14 @@
             <div class="col-md-8 mb-4">
                 <!--Card-->
                 <div class="card p-4">
+                    <form [formGroup]="shippingForm">
                     <!--Grid row-->
                     <div class="row mb-3">
                         <!--Grid column-->
                         <div class="col-md-6 mb-2">
                             <!--firstName-->
                             <div class="form-outline border rounded">
-                                <input type="text" id="typeText" class="form-control" />
+                                <input type="text" id="typeText" formControlName="firstName"  class="form-control" />
                                 <label class="form-label" for="typeText">First name</label>
                             </div>
                         </div>
@@ -30,7 +31,7 @@
                         <div class="col-md-6 mb-2">
                             <!--lastName-->
                             <div class="form-outline border rounded">
-                                <input type="text" id="typeText" class="form-control" />
+                                <input type="text" id="typeText" formControlName="lastName"  class="form-control" />
                                 <label class="form-label" for="typeText">Last name</label>
                             </div>
                         </div>
@@ -38,18 +39,18 @@
                     </div>
                     <!--Grid row-->
 
-                    <!--Username-->
+                    <!-- Username
                     <div class="input-group mb-4">
                         <span class="input-group-text" id="basic-addon1">@</span>
                         <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                    </div>
+                    </div> -->
 
                     <!--email-->
                     <p class="mb-0">
                         Email (optional)
                     </p>
                     <div class="form mb-4">
-                         <input type="email" class="form-control" placeholder="youremail@example.com" aria-label="youremail@example.com" aria-describedby="basic-addon1" />
+                         <input type="email" class="form-control" formControlName="email" placeholder="youremail@example.com" aria-label="youremail@example.com" aria-describedby="basic-addon1" />
                     </div>
 
                     <!--address-->
@@ -57,7 +58,7 @@
                         Address
                     </p>
                     <div class="form mb-4">
-                        <input type="email" class="form-control" placeholder="1234 Main St" aria-label="1234 Main St" aria-describedby="basic-addon1" />
+                        <input type="email" class="form-control" formControlName="addressLine1" placeholder="1234 Main St" aria-label="1234 Main St" aria-describedby="basic-addon1" />
                     </div>
 
                     <!--address-2-->
@@ -65,7 +66,7 @@
                         Address 2 (optional)
                     </p>
                     <div class="form mb-4">
-                        <input type="email" class="form-control" placeholder="Apartment or suite" aria-label="Apartment or suite" aria-describedby="basic-addon1" />
+                        <input type="email" class="form-control" formControlName="addressLine2" placeholder="Apartment or suite" aria-label="Apartment or suite" aria-describedby="basic-addon1" />
                     </div>
 
                     <!--Grid row-->
@@ -76,8 +77,8 @@
                                 Country
                             </p>
                             <div class="form mb-4">
-                        <input type="email" class="form-control" placeholder="United States" aria-label="United States" aria-describedby="basic-addon1" />
-                    </div>
+                        <input type="email" class="form-control" formControlName="country" placeholder="United States" aria-label="United States" aria-describedby="basic-addon1" />
+                            </div>
                         </div>
                         <!--Grid column-->
 
@@ -87,7 +88,7 @@
                                 State
                             </p>
                             <div class="form mb-4">
-                        <input type="email" class="form-control" placeholder="California" aria-label="California" aria-describedby="basic-addon1" />
+                        <input type="email" class="form-control" formControlName="state" placeholder="California" aria-label="California" aria-describedby="basic-addon1" />
                     </div>
                         </div>
                         <!--Grid column-->
@@ -95,16 +96,25 @@
                         <!--Grid column-->
                         <div class="col-lg-4 col-md-12 mb-4">
                             <p class="mb-0">
+                                City
+                            </p>
+                            <div class="form">
+                                <input type="text" formControlName="city" placeholder="Hamden" aria-label="Hamden" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 mb-4">
+                            <p class="mb-0">
                                 Zip
                             </p>
                             <div class="form">
-                                <input type="text" class="form-control"/>
+                                <input type="text" formControlName="postalCode"  placeholder="12345" class="form-control"/>
                             </div>
                         </div>
                         <!--Grid column-->
                     </div>
                     <!--Grid row-->
-
+                    </form>
                     <hr />
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
@@ -117,21 +127,17 @@
                     </div>
 
                     <hr />
-
+                    <form [formGroup]="paymentForm">
                     <div class="my-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked />
-                            <label class="form-check-label" for="flexRadioDefault1"> Credit card </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                            <label class="form-check-label" for="flexRadioDefault2"> Debit card </label>
+                            <input type="radio" formControlName="paymentType" value="CREDIT_CARD" checked> Credit card
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
-                            <label class="form-check-label" for="flexRadioDefault3"> Paypal </label>
+                            <input type="radio" formControlName="paymentType" value="DEBIT_CARD"> Debit card
                         </div>
+                        <div class="form-check">
+                            <input type="radio" formControlName="paymentType" value="PAYPAL"> paypal 
+                        </div> 
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 mb-3">
@@ -139,7 +145,7 @@
                                 Name on card
                             </p>
                             <div class="form">
-                                <input type="text" class="form-control"/>
+                                <input type="text" formControlName="nameOnCard" class="form-control"/>
                                 <div class="form-helper">Full name as displayed on card</div>
                             </div>
                         </div>
@@ -148,7 +154,7 @@
                                 Credit card number
                             </p>
                             <div class="form">
-                                <input type="text" class="form-control" />                                
+                                <input type="text" formControlName="creditCardNumber" class="form-control" />                                
                             </div>
                         </div>
                     </div>
@@ -158,7 +164,7 @@
                                 Expiration
                             </p>
                             <div class="form">
-                                <input type="text" class="form-control" />
+                                <input type="text" formControlName="expirationDate" class="form-control" />
                                 
                             </div>
                         </div>
@@ -167,13 +173,14 @@
                                 CVV
                             </p>
                             <div class="form">
-                                <input type="text" class="form-control" />
+                                <input type="text" formControlName="cvv" class="form-control" />
                                 
                             </div>
                         </div>
                     </div>
-                    <hr class="mb-4" />                    
-                  <button class="btn btn-primary" type="button">Continue to checkout</button>
+                    <hr class="mb-4" />    
+                </form>                
+                  <button class="btn btn-primary" type="button" [disabled]="shippingForm.invalid || paymentForm.invalid" (click)="showForms(shippingForm.value,paymentForm.value)">Continue to checkout</button>
                 </div>
                 <!--/.Card-->
             </div>
@@ -184,7 +191,7 @@
                 <!-- Heading -->
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Your cart</span>
-                    <span class="badge rounded-pill badge-primary">3</span>
+                    <span class="badge rounded-pill badge-primary">{{itemsInCart}}</span>
                 </h4>
 
                 <!-- Cart -->
@@ -219,7 +226,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total (USD)</span>
-                        <strong>$20</strong>
+                        <strong>{{totalCost | currency}}</strong>
                     </li>
                 </ul>
                 <!-- Cart -->

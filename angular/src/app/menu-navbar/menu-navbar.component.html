@@ -93,8 +93,11 @@
               <h6>{{item.price|currency}}</h6>
             </div>
           </div>
-          <div>
-            <a routerLink="" style="color: rgb(131, 129, 129); opacity: 50%;">
+          <div class="d-flex align-items-center">
+            <div class="form-outline me-1" style="width: 100px;">
+                <input type="number" [value]="item.quantity" #num min="0" max="100" (change)="updateQuantityOfItem(item.id,num.value)" class="form-control" />
+            </div>
+            <a routerLink="" style="color: rgb(131, 129, 129); opacity: 50%;" (click)="removeItem(item.id, num.value)">
               <i class="fa-regular fa-trash-can fa-xl"></i>
             </a>
           </div>
@@ -103,7 +106,7 @@
     </div>
    
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" (click)="checkout(loginoffcanvas)">CheckOut</button>
+      <button type="button" class="btn btn-dark" (click)="checkout(loginoffcanvas)" (click)="modal.close('Close click')">CheckOut</button>
       <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
     </div>
   </ng-template>

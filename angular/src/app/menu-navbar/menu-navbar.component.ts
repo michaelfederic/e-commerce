@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Product } from '../models/product';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ECommerceService } from '../services/e-commerce.service';
-import { ErrorMessage } from '../models/error';
+
 import { Customer } from '../models/customer';
 import { Router } from '@angular/router';
+import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.service';
 @Component({
   selector: 'app-menu-navbar',
   templateUrl: './menu-navbar.component.html',
@@ -27,7 +28,9 @@ export class MenuNavbarComponent implements OnInit {
     private offcanvasService: NgbOffcanvas,
     private fb: FormBuilder,
     private e_commerce: ECommerceService,
-    private router: Router
+    private router: Router,
+    private shoppingCartService: ShoppingCartService
+    
     
   ){}
 
@@ -52,19 +55,13 @@ export class MenuNavbarComponent implements OnInit {
 
   loadShoppingCart(){
     //set shopping cart
-    const cart =sessionStorage.getItem('shoppingCart');
-    if(cart){
-      this.shoppingCart = JSON.parse(cart!);
-      this.itemsInCart = this.shoppingCart.length;
-    }
+    this.shoppingCart = this.shoppingCartService.loadShoppingCart()|| [];
+    this.itemsInCart = this.shoppingCartService.getTotalItemsInShoppingCart();
   }
 
   loadTotalCost(){
     //set total cost
-    const totalCost = Number(sessionStorage.getItem('totalCost'));
-    if(totalCost){
-      this.totalCost =Number(totalCost);
-    } 
+    this.totalCost = this.shoppingCartService.loadTotalCost()|| 0;
   }
 
   openFullscreen(content: any){
@@ -188,9 +185,30 @@ checkout(content: any){
     //redirect to checkout page
     this.router.navigate(['/checkout'])
   }
-
-  //close the current modal
-  this.modalService.dismissAll();
 }
- 
+
+//if customer increase or decrease the total 
+//number of items, call this method to update item quantity in cart
+updateQuantityOfItem(productId: number, quantity: string){
+  const qty = Number(quantity);
+
+  //retrieve the product aty
+  const productQuantity = Number(this.shoppingCartService.getItemQuantity(productId));
+  
+  //check if the customer is adding or subtracting 
+  const isAddition = qty > productQuantity;
+
+  //update item qty
+  this.shoppingCartService.updateQuantityOfItem(productId, qty, isAddition);
+  this.shoppingCartService.loadShoppingCart();
+  this.totalCost = this.shoppingCartService.loadTotalCost();
+}
+
+//remove item(s)(multiple of same item)from cart
+removeItem(productId: number, qty: string){
+  this.shoppingCartService.removeProduct(productId, Number(qty));
+  this.itemsInCart = this.shoppingCartService.getTotalItemsInShoppingCart();
+  this.shoppingCart = this.shoppingCartService.loadShoppingCart()||[];
+  this.totalCost = this.shoppingCartService.loadTotalCost();
+}
 }

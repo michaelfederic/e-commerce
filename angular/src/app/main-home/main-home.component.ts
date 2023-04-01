@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { ECommerceService } from '../services/e-commerce.service';
+import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.service';
 
 @Component({
   selector: 'app-main-home',
@@ -10,12 +11,15 @@ import { ECommerceService } from '../services/e-commerce.service';
 export class MainHomeComponent implements OnInit{
   currentItems: Product[] =[]
   
-  constructor(private e_service: ECommerceService){}
+  constructor(
+    private e_service: ECommerceService,
+    private shoppingCartService: ShoppingCartService){}
 
   ngOnInit(): void {
     this.getItems('all')
-    //if shoppingCart does not exist inside sesssionStorage, 
     
+    //check if shoppingCart exist inside sesssionStorage, 
+    this.shoppingCartService.checkIfShoppingCartExists();
   }
   
 

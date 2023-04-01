@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
 import { ECommerceService } from '../services/e-commerce.service';
 import { MenuNavbarComponent } from '../menu-navbar/menu-navbar.component';
+import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.service';
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
@@ -16,6 +17,7 @@ export class ProductPageComponent implements OnInit  {
    constructor(
     private route: ActivatedRoute,
     private e_service: ECommerceService,
+    private shoppingCartService: ShoppingCartService
     
     ){
   
@@ -30,6 +32,8 @@ export class ProductPageComponent implements OnInit  {
    for (let i = 0; i < 3; i++) {
     this.generateRandomProduct();
     }
+    //check if shopping cart exists
+    this.shoppingCartService.checkIfShoppingCartExists();
   }
 
    getProductDetails(){
@@ -75,7 +79,7 @@ export class ProductPageComponent implements OnInit  {
 
    addToCart(product: Product){
   
-   this.e_service.addToShoppingCart(product);
+   this.shoppingCartService.updateShoppingCart(product,true);
     
     //re render the menu child to show the updated cart
     this.child?.ngOnInit();
