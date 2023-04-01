@@ -81,7 +81,7 @@
       
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
+    <div *ngIf="itemsInCart" class="modal-body">
       <div *ngFor="let item of shoppingCart" class="list-group">
         <div class="list-group-item list-group-item-action d-flex flex-row align-items-center justify-content-between ">
           <div class="d-flex flex-row align-items-center justify-content-between">
@@ -104,9 +104,11 @@
         </div>
       </div>
     </div>
-   
+    <div *ngIf="!itemsInCart" class="modal-body d-flex  align-items-center justify-content-center">
+        <h4>Your cart is empty!</h4>
+    </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" (click)="checkout(loginoffcanvas)" (click)="modal.close('Close click')">CheckOut</button>
+      <button type="button" class="btn btn-dark" [disabled]="itemsInCart==0" (click)="checkout(loginoffcanvas)" (click)="modal.close('Close click')">CheckOut</button>
       <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
     </div>
   </ng-template>
