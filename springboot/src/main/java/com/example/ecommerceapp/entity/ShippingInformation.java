@@ -20,7 +20,8 @@ public class ShippingInformation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer shippingId;
-	private String recipientName;
+	private String firstName;
+	private String lastName;
     private String addressLine1;
     private String addressLine2;
     private String city;

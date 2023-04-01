@@ -19,8 +19,11 @@ public class ShippingInformationDTO {
 //	@NotNull(message="{shipping.shippingId.null}")
 	private Integer shippingId;
 
-	@NotNull(message="{shipping.recipientName.null}")
-	private String recipientName;
+	@NotNull(message="{shipping.firstName.null}")
+	private String firstName;
+	
+	@NotNull(message="{shipping.lastName.null}")
+	private String lastName;
 
 	@NotNull(message="{shipping.addressLine1.null}")
 	private String addressLine1;
@@ -46,7 +49,8 @@ public class ShippingInformationDTO {
 	public static ShippingInformationDTOBuilder entityToDto(ShippingInformation shippingInformation) {
         return ShippingInformationDTO.builder()
                 .shippingId(shippingInformation.getShippingId())
-                .recipientName(shippingInformation.getRecipientName())
+                .firstName(shippingInformation.getFirstName())
+                .lastName(shippingInformation.getLastName())
                 .addressLine1(shippingInformation.getAddressLine1())
                 .addressLine2(shippingInformation.getAddressLine2())
                 .city(shippingInformation.getCity())
