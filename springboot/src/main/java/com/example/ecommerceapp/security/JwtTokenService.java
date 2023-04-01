@@ -47,7 +47,7 @@ public class JwtTokenService {
         return Jwts.builder()
                 .setSubject(customer.getUsername())
                 .setIssuedAt(now)
-                .setExpiration(validity)
+//                .setExpiration(validity)
                 // Create a secret key from the JWT secret string
                 .signWith(jwtSecret)
                 .compact();

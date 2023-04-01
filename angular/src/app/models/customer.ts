@@ -1,8 +1,8 @@
 export class Customer{
-    customerId: number | undefined;
-    username: string | undefined;
-	email: string | undefined;
-	password: string | undefined;
+    customerId?: number | null;
+    username: string = '';
+	email?: string ='';
+	password: string =''
     // customerCart: CustomerCart;
 	//orders: Order[]
 

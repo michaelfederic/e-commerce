@@ -6,7 +6,6 @@ import { Product } from '../models/product';
   providedIn: 'root'
 })
 export class ECommerceService {
-  jwtToken: string | undefined;
   constructor(private http: HttpClient) { }
 
   // return list of items depending on category
@@ -58,12 +57,18 @@ export class ECommerceService {
   }
 
 
-  login(form: any){
-    return this.http.post('http://localhost:8080/api/auth/login', form, {responseType: 'json'})
+  login(loginFormDetails: any){
+    return this.http.post('http://localhost:8080/api/auth/login', loginFormDetails, {responseType: 'json'})
   
   }
 
-  getJwtToken(){
-    return this.jwtToken;
+  signup(signUpFormDetails: any){
+    return this.http.post('http://localhost:8080/api/auth/register', signUpFormDetails, {responseType:'json'})
   }
+
+  getDetails(){
+    return this.http.get('http://localhost:8080/api/user/details', {responseType:'json'})
+  }
+
+
 }
