@@ -22,6 +22,7 @@ export class MenuNavbarComponent implements OnInit {
   username: string = sessionStorage.getItem('username')||'';
   customer: Customer | undefined;
   isCheckingOut= false;
+  currentUrl = location.href;
 
   constructor(
     private modalService: NgbModal,
@@ -49,28 +50,54 @@ export class MenuNavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadShoppingCart();
-    this.loadTotalCost();
-    
   }
 
   loadShoppingCart(){
-    //set shopping cart
+    //load shopping cart
     this.shoppingCart = this.shoppingCartService.loadShoppingCart()|| [];
     this.itemsInCart = this.shoppingCartService.getTotalItemsInShoppingCart();
-  }
-
-  loadTotalCost(){
-    //set total cost
     this.totalCost = this.shoppingCartService.loadTotalCost()|| 0;
+    this.shoppingCartService.checkIfAnyQtyIsZero();
   }
 
   openFullscreen(content: any){
-    this.modalService.open(content, {fullscreen: true})
+    console.log(this.currentUrl)
+    this.loadShoppingCart();
+    this.perserveCurrentUrl();
+    const modalRef= this.modalService.open(content, {fullscreen: true});
+    
+    //when the modal is dismissed
+    modalRef.dismissed.subscribe(()=>{
+    })
+    
   }
 
   openEnd(content: any) {
-		this.offcanvasService.open(content, { position: 'end' });
+    this.loadShoppingCart();
+    this.perserveCurrentUrl();
+		const offcanvasRef= this.offcanvasService.open(content, { position: 'end' });
+
+    //when the modal is dismissed
+    offcanvasRef.dismissed.subscribe(()=>{
+        // this.perserveCurrentUrl();
+    })
+
 	}
+
+  perserveCurrentUrl(){
+    this.loadShoppingCart();
+    
+    //extract the string that comes after "/4200/" in the current URL. 
+    //returning an array containing the results of that search or null
+    //result: ['4200/product/details/3', 'product/details/3']
+    const match= this.currentUrl.match(/4200\/(.*)/);
+    
+    //get the endpoint (to send customer back to the current url before modal opened)
+    const endPoint = match ? match[1]:'';
+
+    //navigate to that endpoint
+    this.router.navigate([endPoint]);
+  }
 
    //close modal and reset fields
   closeSignupOffcanvas(){
@@ -189,26 +216,15 @@ checkout(content: any){
 
 //if customer increase or decrease the total 
 //number of items, call this method to update item quantity in cart
-updateQuantityOfItem(productId: number, quantity: string){
-  const qty = Number(quantity);
-
-  //retrieve the product aty
-  const productQuantity = Number(this.shoppingCartService.getItemQuantity(productId));
-  
-  //check if the customer is adding or subtracting 
-  const isAddition = qty > productQuantity;
-
-  //update item qty
-  this.shoppingCartService.updateQuantityOfItem(productId, qty, isAddition);
-  this.shoppingCartService.loadShoppingCart();
-  this.totalCost = this.shoppingCartService.loadTotalCost();
+updateQuantityOfItem(product: Product, quantity: string){
+  this.shoppingCartService.updateShoppingCart(product, Number(quantity));
+  this.loadShoppingCart();
 }
 
-//remove item(s)(multiple of same item)from cart
+//remove item(s)(multiple of same item) from cart
 removeItem(productId: number, qty: string){
+  this.perserveCurrentUrl();
   this.shoppingCartService.removeProduct(productId, Number(qty));
-  this.itemsInCart = this.shoppingCartService.getTotalItemsInShoppingCart();
-  this.shoppingCart = this.shoppingCartService.loadShoppingCart()||[];
-  this.totalCost = this.shoppingCartService.loadTotalCost();
+  this.loadShoppingCart();
 }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder , FormGroup, Validators} from '@angular/forms';
-import { ECommerceService } from '../services/e-commerce.service';
 import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.service';
+import { Product } from '../models/product';
 
 @Component({
   selector: 'app-checkout',
@@ -12,15 +12,17 @@ import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.serv
 export class CheckoutComponent implements OnInit {
   itemsInCart = 0;
   totalCost = 0;
+  shoppingCart: Product[]= [];
   constructor(
     private fb: FormBuilder,
-    private e_commerce: ECommerceService,
     private shoppingCartService: ShoppingCartService
     ){}
 
   ngOnInit(): void {
    this.loadTotalItemsInCart();
    this.loadTotalCost();
+   this.shoppingCart = this.shoppingCartService.loadShoppingCart()||[];
+   console.log(this.shoppingCart)
   }
 
   shippingForm= this.fb.group({

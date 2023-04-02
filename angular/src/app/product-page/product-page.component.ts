@@ -65,7 +65,6 @@ export class ProductPageComponent implements OnInit  {
    generateRandomProduct(){
     // Returns a random integer from 1 to 20(number of available products)
     const num = Math.floor(Math.random() * 20) + 1;
-    console.log(num)
     
     this.e_service.getProductDetails(num).subscribe({
       next: (data: Product)=>{
@@ -79,13 +78,10 @@ export class ProductPageComponent implements OnInit  {
 
    addToCart(product: Product){
   
-   this.shoppingCartService.updateShoppingCart(product,true);
+   this.shoppingCartService.addOneToCart(product);
     
     //re render the menu child to show the updated cart
     this.child?.ngOnInit();
    }
 
-   deleteFromCart(product: Product){
-
-   }
 }

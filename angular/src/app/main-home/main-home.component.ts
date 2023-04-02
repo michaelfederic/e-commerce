@@ -25,7 +25,6 @@ export class MainHomeComponent implements OnInit{
 
   //retrieve list of items from service layer
   getItems(category: string){
-    console.log(category)
     if(category==='all'){
       this.e_service.getAllItems().subscribe((data: Product[])=>{
         this.currentItems= data;
