@@ -39,7 +39,7 @@ public class CustomerDTO {
     public static CustomerDTOBuilder entityToDto(Customer customer) {
         CustomerCartDTO customerCartDTO = null;
         if (customer.getCustomerCart() != null) {
-            customerCartDTO = CustomerCartDTO.entityToDto(customer.getCustomerCart()).build();
+            customerCartDTO = CustomerCartDTO.entityToDtoBuilder(customer.getCustomerCart()).build();
         }
         
         List<OrderDetailsDTO> orderDetailsDTOs = null;

@@ -45,7 +45,7 @@ public class OrderDetailsDTO {
 		List<ProductDTO> productDTOs = orderDetails
 				.getProducts()
 				.stream()
-				.map(product -> ProductDTO.entityToDto(product).build())
+				.map(product -> ProductDTO.entityToDtoBuilder(product).build())
 				.toList();
 		List<ShippingInformationDTO> shippingInformationDTOs = orderDetails
 				.getShippingInformation()

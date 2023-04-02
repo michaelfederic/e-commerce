@@ -35,8 +35,11 @@ public class ProductDTO {
 	@NotEmpty(message="{product.image.null}")
     private String image;
 	
+	@NotEmpty(message="{product.quantity.null}")
+	private String quantity;
+	
 	//convert from entity to dto
-    public static ProductDTOBuilder entityToDto(Product product) {
+    public static ProductDTOBuilder entityToDtoBuilder(Product product) {
     	
     	return ProductDTO.builder()
     			.id(product.getId())
@@ -46,5 +49,5 @@ public class ProductDTO {
     			.description(product.getDescription())
     			.image(product.getImage());
     			
-    }
+    } 
 }
