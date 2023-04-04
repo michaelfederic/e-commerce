@@ -44,7 +44,7 @@ public class CustomerCart {
     		inverseJoinColumns = @JoinColumn(name="product_id")
     		)
     private List<Product> products;
-    private Integer totalCost;
+    private Float totalCost;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     

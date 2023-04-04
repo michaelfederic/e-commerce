@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder , FormGroup, Validators} from '@angular/forms';
 import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.service';
 import { Product } from '../models/product';
+import { PaypalService } from '../services/paypal/paypal.service';
 
 @Component({
   selector: 'app-checkout',
@@ -13,16 +14,23 @@ export class CheckoutComponent implements OnInit {
   itemsInCart = 0;
   totalCost = 0;
   shoppingCart: Product[]= [];
+  
   constructor(
     private fb: FormBuilder,
-    private shoppingCartService: ShoppingCartService
+    private shoppingCartService: ShoppingCartService,
+    private paypalService: PaypalService
     ){}
 
   ngOnInit(): void {
    this.loadTotalItemsInCart();
    this.loadTotalCost();
    this.shoppingCart = this.shoppingCartService.loadShoppingCart()||[];
-   console.log(this.shoppingCart)
+   
+   // Get the order object which contains total cost and products
+   const order = this.shoppingCartService.createOrderToSendToServer();
+
+   // Render paypyal button, pass in the order and id of paypal button container
+   this.paypalService.loadPaypal(order, 'paypal-button-container');
   }
 
   shippingForm= this.fb.group({

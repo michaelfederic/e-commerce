@@ -25,7 +25,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
     private String title;
-    private Integer price;
+    private Float price;
     private String category;
     private String description;
     private String image;

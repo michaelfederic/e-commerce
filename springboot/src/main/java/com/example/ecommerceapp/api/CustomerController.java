@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ecommerceapp.model.CustomerCartDTO;
 import com.example.ecommerceapp.model.CustomerDTO;
+import com.example.ecommerceapp.model.ResponseMessage;
 import com.example.ecommerceapp.service.EcommerceService;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class CustomerController {
 	
 	@Autowired
 	EcommerceService ecommerceService;
+	
 	
 	@GetMapping("/hello")
 	public String hello() {
@@ -44,4 +46,5 @@ public class CustomerController {
 	public ResponseEntity<CustomerCartDTO> addShoppingCart(@Valid @RequestBody CustomerCartDTO customerCartDTO){
 		return ResponseEntity.ok().body(ecommerceService.addShoppingCart(customerCartDTO));
 	}
+	
 }

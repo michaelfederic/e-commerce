@@ -41,7 +41,7 @@ public class OrderDetails {
     		inverseJoinColumns = @JoinColumn(name="product_id")
     		)
     private List<Product> products;
-    private Integer totalCost;
+    private Float totalCost;
     
     @OneToMany(mappedBy="order")
     private List<ShippingInformation> shippingInformation;

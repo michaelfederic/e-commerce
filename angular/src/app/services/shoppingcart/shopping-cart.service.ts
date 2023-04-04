@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PayPalOrder } from 'src/app/models/paypalorder';
 import { Product } from 'src/app/models/product';
 
 @Injectable({
@@ -25,8 +26,8 @@ export class ShoppingCartService {
 
       //if item exists return first index of item else -1
       const itemExist = cart.findIndex((item)=> item.id ===product.id);
-
-    
+      
+      
         if(itemExist === -1){
           product.quantity= 1;
 
@@ -157,5 +158,26 @@ export class ShoppingCartService {
       //update cart
       sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
     }
+  }
+
+  createOrderToSendToServer(): PayPalOrder{
+    let cart = this.loadShoppingCart();
+
+    //modify the items description before adding the item to the cart
+    //this is a fix for an paypal error stating the description is too long
+    cart?.map(item=> item.description = item.description.slice(0, 115))
+    
+    // Only include the productsDTO field if the cart is not empty
+    const productDTOs = cart!.length > 0 ? cart : [];
+
+    const order: PayPalOrder ={
+      "totalCost": Number(this.loadTotalCost()),
+
+      // Spread in the productDTOs field
+      ...(productDTOs && { productDTOs }), 
+    }
+
+    console.log(productDTOs)
+    return order;
   }
 }

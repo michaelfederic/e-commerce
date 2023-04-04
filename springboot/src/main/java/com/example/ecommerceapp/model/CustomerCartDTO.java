@@ -32,7 +32,7 @@ public class CustomerCartDTO {
     
     @NotNull(message="{customer.cart.totalcost.null}")
     // The total cost of all the products in the cart
-    private Integer totalCost;
+    private Float totalCost;
     
     // The date the cart was created
     private LocalDateTime dateCreated;

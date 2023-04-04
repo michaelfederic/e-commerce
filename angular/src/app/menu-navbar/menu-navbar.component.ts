@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Product } from '../models/product';
@@ -15,7 +15,7 @@ import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.serv
 })
 export class MenuNavbarComponent implements OnInit {
   shoppingCart: Product[]=[];
-  itemsInCart: number=0;
+  @Output() itemsInCart: number=0;
   totalCost: number = 0;
   customerLoginErrorMessage: string | undefined;
   customerSignupErrorMessage: string | undefined;

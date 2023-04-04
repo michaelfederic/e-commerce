@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.example.ecommerceapp.entity.OrderDetails;
 import com.example.ecommerceapp.entity.OrderStatus;
-
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +25,7 @@ public class OrderDetailsDTO {
 	private List<ProductDTO> productDTOs;
 
 	@NotNull(message="{order.totalCost.null}")
-	private Integer totalCost;
+	private Float totalCost;
 
 	private List<ShippingInformationDTO> shippingInformationDTOs;
 	

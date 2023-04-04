@@ -23,6 +23,7 @@ export class ECommerceService {
     return this.http.get<Product>(`https://fakestoreapi.com/products/${productId}`)
   }
 
+
   login(loginFormDetails: any){
     return this.http.post('http://localhost:8080/api/auth/login', loginFormDetails, {responseType: 'json'})
   

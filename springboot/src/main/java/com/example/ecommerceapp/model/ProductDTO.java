@@ -24,7 +24,7 @@ public class ProductDTO {
     private String title;
 	
 	@NotNull(message="{product.price.null}")
-    private Integer price;
+    private Float price;
 	
 	@NotEmpty(message="{product.category.null}")
     private String category;
