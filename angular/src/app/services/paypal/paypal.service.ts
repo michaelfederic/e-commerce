@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { loadScript } from '@paypal/paypal-js';
 import { PayPalOrder } from 'src/app/models/paypalorder';
 import { environment } from 'src/environments/environment';
@@ -8,8 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PaypalService {
   private paypal: any;
-
-  constructor(private http: HttpClient) {
+  successfulOrder =false;
+  constructor(private router: Router) {
     
    }
 //load the paypal scripts
@@ -45,7 +46,12 @@ export class PaypalService {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              // Authenticates the request (must include)
+              /*Authenticates the request (must include) 
+              * Now because this fetch 
+              * is not using the httpclient(configured all requests using http 
+              * client to use authorization http interceptor) i needed to include
+              * authorization bearer
+              */
               "Authorization" : "Bearer "+ sessionStorage.getItem("token")
             },
             body: JSON.stringify(paypalOrder)
@@ -56,20 +62,25 @@ export class PaypalService {
           .then((order) => order.id);
         },
         onApprove: (data:any, actions:any) => {
-          // TO-DO- apply capture config
-          console.log(data.orderID)
+          // Call being made to my server api, then my server calls PayPal's apis
           return fetch(`http://localhost:8080/api/user/capture`,{
             method: "POST",
             headers:{
               "Content-Type": "application/json",
               "Authorization" : "Bearer "+ sessionStorage.getItem("token")
             }, 
+            // send the order id as a object with orderID being the name
             body: JSON.stringify({
               orderID: data.orderID})
           })
           .then((response)=> response.json())
+          // On successful capture return transaction details
           .then((orderData)=>{
             console.log("Capture result", orderData)
+
+            // Variable to track if the order was a success, this variable triggers a modal inside checkout component
+            this.successfulOrder=true;
+            this.refresh();
           })
         },
         onError: (err: Error) => {
@@ -82,6 +93,7 @@ export class PaypalService {
           shape: 'pill',
           label: 'paypal'
         },
+        
         advanced:{
           commit:false
         }
@@ -91,4 +103,10 @@ export class PaypalService {
     }
   }
 
+  // Refresh the checkout component, solution for same url 
+  refresh(){
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigate(["/checkout"]));
+  }
+  
 }

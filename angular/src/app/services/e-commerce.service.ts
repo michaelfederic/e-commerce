@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product';
+import { Customer } from '../models/customer';
+import { CustomerCart } from '../models/customer-cart';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,10 @@ export class ECommerceService {
 
   getDetails(){
     return this.http.get('http://localhost:8080/api/user/details', {responseType:'json'})
+  }
+
+  addShoppingCart(customerCart: CustomerCart){
+    return this.http.put("http://localhost:8080/api/user/shoppingcart", customerCart, {responseType: 'json'})
   }
 
 

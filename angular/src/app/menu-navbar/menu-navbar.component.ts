@@ -15,7 +15,7 @@ import { ShoppingCartService } from '../services/shoppingcart/shopping-cart.serv
 })
 export class MenuNavbarComponent implements OnInit {
   shoppingCart: Product[]=[];
-  @Output() itemsInCart: number=0;
+  itemsInCart: number=0;
   totalCost: number = 0;
   customerLoginErrorMessage: string | undefined;
   customerSignupErrorMessage: string | undefined;
@@ -185,9 +185,11 @@ export class MenuNavbarComponent implements OnInit {
       next: (data: any)=>{
         console.log(data)
         this.customer = data;
+        
         sessionStorage.setItem('username',this.customer?.username||'')
         this.username = sessionStorage.getItem('username')||'';
         console.log(this.username)
+        sessionStorage.setItem('id', String(data.customerId)||'')
       }
     })
   }

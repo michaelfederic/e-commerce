@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './services/JwtInterceptor';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { JwtInterceptor } from './services/JwtInterceptor';
     ProductPageComponent,
     MenuNavbarComponent,
     FooterComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

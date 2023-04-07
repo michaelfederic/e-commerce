@@ -21,7 +21,7 @@ export class MainHomeComponent implements OnInit{
     //check if shoppingCart exist inside sesssionStorage, 
     this.shoppingCartService.checkIfShoppingCartExists();
   }
-  
+
 
   //retrieve list of items from service layer
   getItems(category: string){
