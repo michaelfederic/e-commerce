@@ -33,6 +33,6 @@ This is a full-stack e-commerce application that was created to demonstrate my s
     - Lombok for reducing boilerplate code
     - Spring Data JPA for database access using Hibernate
     - MySQL database using XAMPP
-    - PayPal Java SDK for integrating with PayPal API
+    - PayPal Javascript SDK for integrating with PayPal API
 ## Conclusion
 Overall, this project demonstrates my ability to design, implement, and maintain a full-stack web application using modern web development technologies, as well as my ability to integrate third-party software and Spring modules into a project to enhance its functionality and performance. It showcases my skills in front-end and back-end development, database design and management, and project planning and management, as well as my understanding of security in web development. The use of JWT, Lombok, and Spring Validation demonstrates my familiarity with common Java development tools and practices.
