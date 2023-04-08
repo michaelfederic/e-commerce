@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NameDTO {
-    private String given_name;
-    private String surname;
+    private String full_name;
 }

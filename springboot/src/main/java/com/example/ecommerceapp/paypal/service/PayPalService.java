@@ -1,7 +1,9 @@
 package com.example.ecommerceapp.paypal.service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +14,39 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.ecommerceapp.model.OrderDetailsDTO;
+import com.example.ecommerceapp.entity.Customer;
+import com.example.ecommerceapp.entity.Order;
+import com.example.ecommerceapp.entity.OrderStatus;
+import com.example.ecommerceapp.model.OrderDTO;
 import com.example.ecommerceapp.paypal.model.OrderResponse;
 import com.example.ecommerceapp.paypal.model.PayPalCreateOrderRequestDTO;
 import com.example.ecommerceapp.paypal.model.PayPalCreateOrderResponseDTO;
+import com.example.ecommerceapp.paypal.model.ShippingDTO;
+import com.example.ecommerceapp.repository.CustomerRepository;
+import com.example.ecommerceapp.repository.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class PayPalService {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	CustomerRepository customerRepository;
+	
+	@Autowired
+	OrderRepository orderRepository;
 	
 	@Value("${paypal.client.id}")
 	private String clientId;
@@ -70,24 +88,17 @@ public class PayPalService {
 	
 	
 	// Create paypal order from order details
-	public OrderResponse placeOrder(OrderDetailsDTO orderDetailsDTO) {
-		
-		PayPalCreateOrderRequestDTO order = new PayPalCreateOrderRequestDTO();
-		
-		order = order.myOrderToPaypalOrder(orderDetailsDTO);
-		
-		// Create header to set authorization header
-		HttpHeaders headers = new HttpHeaders();
-		
+	public OrderResponse placeOrder(OrderDTO orderDTO) {
 		// Obtain the access token from paypal
 		String accessToken = generateAccessToken();
 		
-		// 
-		String requestId = UUID.randomUUID().toString();
+		// Convert my order dto to appropriate  PayPal dto object
+		PayPalCreateOrderRequestDTO order = new PayPalCreateOrderRequestDTO();
+		order = order.myOrderToPaypalOrder(orderDTO);
 		
-		headers.set("Authorization", "Bearer "+ accessToken);
-		headers.set("PayPal-Request-Id", requestId);
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		// Create necessary headers to interact with PayPal's REST apis
+		HttpHeaders headers = createHeaders(accessToken);
 		
 		// Create entity with headers to order details
 		HttpEntity<PayPalCreateOrderRequestDTO> requestEntity = new HttpEntity<>(order, headers);
@@ -98,6 +109,7 @@ public class PayPalService {
 	    				requestEntity, 
 	    				PayPalCreateOrderResponseDTO.class);
 	    
+	    // Get the body of the returned response
 	    PayPalCreateOrderResponseDTO responseDTO = responseEntity.getBody();
 	    
 	    // If the response code is 201 created
@@ -113,6 +125,7 @@ public class PayPalService {
 	    		
 	}
 	
+	
 	// Capture the payment for an order
 	public PayPalCreateOrderResponseDTO capturePayment(String orderId){
 		// Obtain the access token from paypal
@@ -122,12 +135,9 @@ public class PayPalService {
 		String ordId = "";
 		String status  ="";
 		
+		// Create necessary headers to interact with PayPal's REST apis
+		HttpHeaders headers = createHeaders(accessToken);
 		
-		HttpHeaders headers = new HttpHeaders();
-		String requestId = UUID.randomUUID().toString();
-		headers.set("PayPal-Request-Id", requestId);
-		headers.set("Authorization", "Bearer "+accessToken);
-		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 		
 		 try {
@@ -145,6 +155,23 @@ public class PayPalService {
 		ordId = jsonResponse.get("id").getAsString();
 		status = jsonResponse.get("status").getAsString();
 		
+		// Store the order Id after successful purchase
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("username"+username);
+		Optional<Customer> customerOp = customerRepository.findByUsername(username);
+		Order order = new Order();
+		
+		if(customerOp.isPresent()) {
+			System.out.println("stored the id");
+			order.setPaypalOrderId(orderId);
+			order.setStatus(OrderStatus.COMPLETED);
+			order.setCustomer(customerOp.get());
+			orderRepository.save(order);
+			
+			customerOp.get().getOrders().add(order);
+			
+		}
+		
 		System.out.println("Order Id from capture: "+ ordId);
 		System.out.println("Order status from capture: "+ status);
 		 }catch(JsonProcessingException e) {
@@ -157,10 +184,49 @@ public class PayPalService {
 		
 	} 
 	
+	// Get order details
+	public PayPalCreateOrderResponseDTO getOrderDetails(String orderId) {
+		// Obtain the access token from paypal
+		String accessToken = generateAccessToken();
+		
+		String paypalUrl = "https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId;
+		
+		// Create necessary headers to interact with PayPal's REST apis
+		HttpHeaders headers = createHeaders(accessToken);
+		
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<PayPalCreateOrderResponseDTO> response = restTemplate
+				.exchange(paypalUrl, HttpMethod.GET,requestEntity, PayPalCreateOrderResponseDTO.class);
+		
+		PayPalCreateOrderResponseDTO res = response.getBody();
+		System.out.println("Response from paypal: "+ res);
+		PayPalCreateOrderResponseDTO forClient = new PayPalCreateOrderResponseDTO();
+		forClient.setPurchase_units(res.getPurchase_units());
+		ShippingDTO shippingInfo = res.getPurchase_units().get(0).getShipping();
+		
+		forClient.setId(res.getId());
+		forClient.getPurchase_units().get(0).setShipping(shippingInfo);
+		
+		return forClient;
+			
+	}
+	
+	public HttpHeaders createHeaders(String accessToken) {
+		HttpHeaders headers = new HttpHeaders();
+		String requestId = UUID.randomUUID().toString();
+		headers.set("PayPal-Request-Id", requestId);
+		headers.set("Authorization", "Bearer "+accessToken);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return headers;
+	}
+	
+	
+	//--------------------------------------------------------------------------------------------------
 	// For testing if my dto conversion works that is matches PayPal's Json object
-	public PayPalCreateOrderRequestDTO getOrderRequest(OrderDetailsDTO orderDetailsDTO) {
+	public PayPalCreateOrderRequestDTO getOrderRequest(OrderDTO orderDTO) {
 		PayPalCreateOrderRequestDTO order = new PayPalCreateOrderRequestDTO();
-		return order.myOrderToPaypalOrder(orderDetailsDTO);
+		return order.myOrderToPaypalOrder(orderDTO);
 	}
 	
 }

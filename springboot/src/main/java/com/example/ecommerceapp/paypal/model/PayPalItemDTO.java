@@ -13,5 +13,6 @@ public class PayPalItemDTO {
     private String name;
     private String description;
     private String quantity;
+    private String image;
     private PayPalUnitAmountDTO unit_amount;
 }

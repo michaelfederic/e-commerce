@@ -30,24 +30,19 @@ public class CustomerDTO {
 	@NotEmpty(message="{customer.password.null}")
 	private String password;
 	
-	private CustomerCartDTO customerCartDTO;
 	
-	private List<OrderDetailsDTO> orderDetailsDTOs;
+	private List<OrderDTO> orderDTOs;
 	
     private List<GrantedAuthority> authorities;
     
     public static CustomerDTOBuilder entityToDto(Customer customer) {
-        CustomerCartDTO customerCartDTO = null;
-        if (customer.getCustomerCart() != null) {
-            customerCartDTO = CustomerCartDTO.entityToDtoBuilder(customer.getCustomerCart()).build();
-        }
-        
-        List<OrderDetailsDTO> orderDetailsDTOs = null;
+  
+        List<OrderDTO> orderDTOs = null;
         
         if (customer.getOrders() != null) {
-            orderDetailsDTOs = customer.getOrders()
+            orderDTOs = customer.getOrders()
                     .stream()
-                    .map(o-> OrderDetailsDTO.entityToDto(o).build())
+                    .map(o-> OrderDTO.entityToDto(o).build())
                     .toList();
         }
         return CustomerDTO.builder()
@@ -55,8 +50,7 @@ public class CustomerDTO {
                 .username(customer.getUsername())
                 .email(customer.getEmail())
                 .password(null)
-                .customerCartDTO(customerCartDTO)
-                .orderDetailsDTOs(orderDetailsDTOs)
+                .orderDTOs(orderDTOs)
                 .authorities(null);
     }
 	

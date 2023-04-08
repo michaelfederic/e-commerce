@@ -55,10 +55,7 @@ public class ExceptionController {
     //get the status code from the exception
     private HttpStatus getStatusFromException(Exception exception) {
         if (exception instanceof CustomerException ||
-            exception instanceof OrderDetailsException ||
-            exception instanceof PaymentInfoException ||
-            exception instanceof ShippingInfoException ||
-            exception instanceof ProductException) {
+            exception instanceof OrderException) {
             return HttpStatus.BAD_REQUEST;
         } else {
             return HttpStatus.INTERNAL_SERVER_ERROR;

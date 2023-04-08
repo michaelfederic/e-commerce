@@ -6,14 +6,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ecommerceapp.model.CustomerCartDTO;
 import com.example.ecommerceapp.model.CustomerDTO;
-import com.example.ecommerceapp.model.ResponseMessage;
+import com.example.ecommerceapp.paypal.model.PayPalCreateOrderResponseDTO;
+import com.example.ecommerceapp.paypal.service.PayPalService;
 import com.example.ecommerceapp.service.EcommerceService;
 
 import jakarta.validation.Valid;
@@ -27,6 +26,8 @@ public class CustomerController {
 	@Autowired
 	EcommerceService ecommerceService;
 	
+	@Autowired
+	PayPalService paypalService;
 	
 	@GetMapping("/hello")
 	public String hello() {
@@ -42,9 +43,9 @@ public class CustomerController {
 		
 	}
 	
-	@PutMapping("/shoppingcart")
-	public ResponseEntity<CustomerCartDTO> addShoppingCart(@Valid @RequestBody CustomerCartDTO customerCartDTO){
-		return ResponseEntity.ok().body(ecommerceService.addShoppingCart(customerCartDTO));
+	@GetMapping("/orderdetails/{orderId}")
+	public ResponseEntity<PayPalCreateOrderResponseDTO> getOrderdetails(@PathVariable String orderId) {
+		return ResponseEntity.ok().body(paypalService.getOrderDetails(orderId));
 	}
 	
 }

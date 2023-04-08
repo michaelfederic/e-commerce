@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.example.ecommerceapp.model.OrderDetailsDTO;
+import com.example.ecommerceapp.model.OrderDTO;
 import com.example.ecommerceapp.paypal.model.PayPalAmountDTO.PayPalAmountDTOBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,22 +40,23 @@ public class PayPalCreateOrderRequestDTO {
     private String payeeEmailAddress = "sb-ok43fj25382721@business.example.com";
     
    // Converts my order details object to a suitable paypal order
-  	public PayPalCreateOrderRequestDTO myOrderToPaypalOrder(OrderDetailsDTO orderDetailsDTO) {
+  	public PayPalCreateOrderRequestDTO myOrderToPaypalOrder(OrderDTO orderDTO) {
   		
   		//unit amount total cost
   		PayPalUnitAmountDTO payPalUnitAmountDTO = PayPalUnitAmountDTO.builder()
 					.currency_code(currency_code)
-					.value(String.valueOf(orderDetailsDTO.getTotalCost()))
+					.value(String.valueOf(orderDTO.getTotalCost()))
 					.build();
 				
   		
   		// Items
-  		List<PayPalItemDTO> items = orderDetailsDTO.getProductDTOs()
+  		List<PayPalItemDTO> items = orderDTO.getProductDTOs()
   				.stream()
   				.map(productDTO -> PayPalItemDTO.builder()
   									.name(productDTO.getTitle())
   									.description(productDTO.getDescription())
   									.quantity(productDTO.getQuantity())
+  									.image(productDTO.getImage())
   									.unit_amount(
   											PayPalUnitAmountDTO.builder()
   											.currency_code(currency_code)
@@ -67,7 +68,7 @@ public class PayPalCreateOrderRequestDTO {
   		// Amount
   		PayPalAmountDTOBuilder amount = PayPalAmountDTO.builder()
   									.currency_code(currency_code)
-  									.value(String.valueOf(orderDetailsDTO.getTotalCost()))
+  									.value(String.valueOf(orderDTO.getTotalCost()))
   									.breakdown(PayPalItemTotalDTO.builder()
   												.item_total(payPalUnitAmountDTO)
   												.items(items)

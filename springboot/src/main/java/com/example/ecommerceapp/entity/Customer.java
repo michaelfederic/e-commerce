@@ -31,6 +31,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Customer implements UserDetails{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer customerId;
@@ -39,12 +43,8 @@ public class Customer implements UserDetails{
 	private String email;
 	private String password;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name ="cart_id")
-	private CustomerCart customerCart;
-	
-	@OneToMany(mappedBy="customer")
-	private List<OrderDetails> orders;
+	@OneToMany(mappedBy="customer", cascade = CascadeType.ALL)
+	private List<Order> orders;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -55,6 +55,7 @@ public class Customer implements UserDetails{
 		this.password= password;
 		this.authorities = authorities;
 	}
+	
 	
 	
 	@Override

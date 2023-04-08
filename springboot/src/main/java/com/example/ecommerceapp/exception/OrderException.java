@@ -1,10 +1,9 @@
 package com.example.ecommerceapp.exception;
 
-public class ShippingInfoException extends RuntimeException {
-
+public class OrderException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
 
-	public ShippingInfoException(String message) {
+	public OrderException(String message) {
         super(message);
     }
 }

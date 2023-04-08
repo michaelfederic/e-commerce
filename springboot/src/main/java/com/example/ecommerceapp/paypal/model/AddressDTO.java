@@ -11,4 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddressDTO {
     private String country_code;
+    private String address_line_1;
+    private String admin_area_2;
+    private String admin_area_1;
+    private String postal_code;
+    
 }
