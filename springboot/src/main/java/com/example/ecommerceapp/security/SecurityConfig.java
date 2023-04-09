@@ -46,24 +46,24 @@ public class SecurityConfig {
 		http
 			.cors().and().csrf().disable();
 		
-		//configuring authorization for Spring Security
+		// Configuring authorization for Spring Security
 		http
 			.authorizeHttpRequests(authorize -> authorize
 					.requestMatchers("/api/auth/**").permitAll()
 					.requestMatchers("/api/user/**").hasRole("USER")
 					.anyRequest().denyAll());
 		
-		//session management for Spring Security in a way that is appropriate for JWT (JSON Web Tokens) authentication.
+		// Session management for Spring Security in a way that is appropriate for JWT (JSON Web Tokens) authentication.
 		http
 			.sessionManagement(session -> session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
 		
-		//configuring the authentication provider for Spring Security.
+		// Configuring the authentication provider for Spring Security.
 		http
 			.authenticationProvider(authenticationProvider());
 		
-		//configure the jwt filter
+		// Configure the jwt filter
 		http
 			.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		

@@ -20,7 +20,6 @@ orders : Order[] = [];
     this.ecommerce.getMyOrders().subscribe({
       next:(orders: any)=>{
         console.log(orders)
-        
         orders.forEach((order: { paypalOrderId: string; }) => this.getOrderDetail(order.paypalOrderId));
         
       },

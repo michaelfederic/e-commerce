@@ -231,7 +231,14 @@ removeItem(productId: number, qty: string){
 }
 
 viewOrderHistory(){
-  console.log('Order history')
   this.router.navigate(['/orderhistory']);
+}
+
+signout(){
+  // Clear the session of the jwt token and other fields
+  sessionStorage.clear();
+
+  this.modalService.dismissAll();
+  window.location.reload();
 }
 }

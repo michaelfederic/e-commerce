@@ -21,12 +21,12 @@ export class ECommerceService {
 
   //return list of all the items
   getAllItems(){
-    return this.http.get<Product[]>(`${this.fakeApiUrl}/products`, {responseType:'json'})
+    return this.http.get<Product[]>(`${this.fakeApiUrl}`, {responseType:'json'})
   }
 
   //return product details
   getProductDetails(productId: number){
-    return this.http.get<Product>(`${this.fakeApiUrl}/products/${productId}`)
+    return this.http.get<Product>(`${this.fakeApiUrl}/${productId}`)
   }
 
 

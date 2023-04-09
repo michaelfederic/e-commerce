@@ -57,7 +57,7 @@
         <a *ngIf="username" class="nav-link me-3" routerLink="" (click)="openEnd(signedin)">
           <i class="far fa-user"></i>
         </a>
-        <p *ngIf="username"class="border-start border-2 p-0 m-0">&nbsp;Hello, <b>{{username}}</b></p>
+        <p *ngIf="username"class="border-start border-2 p-0 m-0">&nbsp;Hello, <b style="color: #607D8B; font-size: 18px;">{{username | titlecase}}</b></p>
         <!-- 
         <a class="nav-link me-3" href="#">
           <i class="fab fa-twitter"></i>
@@ -197,7 +197,7 @@
     </div>
     <div class="offcanvas-footer d-flex align-items-center justify-content-evenly">
       <button type="button" class="btn btn-light" (click)="offcanvas.dismiss('Close click')">Close</button>
-      <button type="button" class="btn btn-secondary" >Sign off</button>
+      <button type="button" class="btn btn-secondary" (click)="signout()">Sign off</button>
     </div>
   </ng-template>
 

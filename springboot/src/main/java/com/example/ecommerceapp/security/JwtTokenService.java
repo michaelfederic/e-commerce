@@ -28,6 +28,7 @@ public class JwtTokenService {
 	public JwtTokenService() {
 	    this.jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	}
+	
     // Generate a JWT for the given authentication object
     public String generateToken(Authentication authentication) {
         // Get the customer object from the authentication

@@ -18,12 +18,12 @@ export class MainHomeComponent implements OnInit{
   ngOnInit(): void {
     this.getItems('all')
     
-    //check if shoppingCart exist inside sesssionStorage, 
+    // Check if shoppingCart exist inside sesssionStorage, 
     this.shoppingCartService.checkIfShoppingCartExists();
   }
 
 
-  //retrieve list of items from service layer
+  // Retrieve list of items from service layer
   getItems(category: string){
     if(category==='all'){
       this.e_service.getAllItems().subscribe((data: Product[])=>{
@@ -38,9 +38,22 @@ export class MainHomeComponent implements OnInit{
   }
 
 
-  //search list 
+  // Search list 
   search(key: string){
-    console.log(key)
+    // If the key is empty return the entire list
+    if(key.trim()==''){
+      this.getItems('all');
+    }
+
+    // Filter list based of key
+    this.currentItems = this.currentItems.filter((item)=> 
+    item.title.toLowerCase().includes(key.toLowerCase()) ||
+    item.category.toLowerCase().includes(key.toLowerCase()) ||
+    item.description.toLowerCase().includes(key.toLowerCase())
+    
+    )
+    
+   
   }
 
   
