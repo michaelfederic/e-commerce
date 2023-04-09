@@ -3,6 +3,9 @@ package com.example.ecommerceapp.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.ecommerceapp.model.OrderDTO;
+import com.example.ecommerceapp.model.OrderDTO.OrderDTOBuilder;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +43,7 @@ public class Order {
     private OrderStatus status;
     
     private String paypalOrderId;
+    
     
 }
 

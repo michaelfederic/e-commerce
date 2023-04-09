@@ -1,1 +1,31 @@
-<p>order-history works!</p>
+<!-- Navbar -->
+<app-menu-navbar></app-menu-navbar>
+<!-- Navbar -->
+<main>
+    <div class="container">
+        <h2 class="my-5 text-center">Order history</h2>
+       
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date Ordered</th>
+                <th>Name</th>
+                <th>Total Cost</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of orders">
+                <td>{{order.paypalOrderId}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.name}}</td>
+                <td>{{order.amount | currency}}</td>
+                <td><a routerLink="">View Details</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <h4 *ngIf="orders.length==0" class="text-center">You have no orders</h4>
+    </div>
+</main>
+

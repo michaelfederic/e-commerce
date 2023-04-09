@@ -193,10 +193,10 @@
       <button type="button" class="btn-close" (click)="offcanvas.dismiss('Cross click')"></button>
     </div>
     <div class="offcanvas-body list-group-flush p-0">
-        <a routerLink="" class="list-group-item list-group-item-action list-group-item-light mb-1 p-3">View order history</a>
+        <a routerLink="" class="list-group-item list-group-item-action list-group-item-light mb-1 p-3" (click)="viewOrderHistory()" (click)="offcanvas.dismiss()">View order history</a>
     </div>
     <div class="offcanvas-footer d-flex align-items-center justify-content-evenly">
-      <button type="button" class="btn btn-light" (click)="offcanvas.close('Close click')">Close</button>
+      <button type="button" class="btn btn-light" (click)="offcanvas.dismiss('Close click')">Close</button>
       <button type="button" class="btn btn-secondary" >Sign off</button>
     </div>
   </ng-template>

@@ -229,4 +229,9 @@ removeItem(productId: number, qty: string){
   this.shoppingCartService.removeProduct(productId, Number(qty));
   this.loadShoppingCart();
 }
+
+viewOrderHistory(){
+  console.log('Order history')
+  this.router.navigate(['/orderhistory']);
+}
 }

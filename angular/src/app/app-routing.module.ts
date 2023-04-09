@@ -4,6 +4,7 @@ import { AuthGuard } from './authguard/auth.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { MainHomeComponent } from './main-home/main-home.component';
 import { ProductPageComponent } from './product-page/product-page.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/OneStopShop', pathMatch: 'full'},
@@ -12,6 +13,7 @@ const routes: Routes = [
 
   //secure checkout path if user is not logged in
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
+  { path: 'orderhistory', component: OrderHistoryComponent, canActivate: [AuthGuard]},
 
   { path: '**', redirectTo: 'OneStopShop' }
 ];

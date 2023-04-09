@@ -18,16 +18,24 @@ export class AuthGuard implements CanActivate {
       //check if token exists in session
       const token = sessionStorage.getItem('token');
       const shoppingCartTotal = this.shoppingCartService.getTotalItemsInShoppingCart();
-
+    
+      // If the customer is not logged in
       if(!token){
-         //return to home page
+
+         // Return to home page
         this.router.navigate([''])
         return false;
+        
+        // If the customer is logged in and wants to access orderhistory
+      }else if(state.url=='/orderhistory'){
 
-        //in the event user logs out and tries to go back
+        // Allow them to access
+        return true;
+
+        // In the event customer logs out and tries to go back
       }else if((state.url=="/checkout" && !token) || shoppingCartTotal==0){
 
-        //return to home page
+        // Return to home page
         this.router.navigate([''])
         return false;
       }

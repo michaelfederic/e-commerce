@@ -40,7 +40,7 @@ export class CheckoutComponent implements OnInit {
   
    // Add the shopping cart only if the customer id has populated
    if(sessionStorage.getItem('id')){
-    this.addShoppingCart();
+    // this.addShoppingCart();
    }
    
   
@@ -125,8 +125,8 @@ displaySuccessMessageModal(){
      this.router.navigate(['/']);
      
      // Empty out shopping cart on the front end
-     sessionStorage.setItem('shoppingCart', JSON.stringify([]));
-     sessionStorage.setItem('totalCost', String(0));
+     localStorage.setItem('shoppingCart', JSON.stringify([]));
+     localStorage.setItem('totalCost', String(0));
    })
   }
 }

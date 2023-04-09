@@ -39,6 +39,7 @@ public class OrderDTO {
 		return OrderDTO.builder()
 				.orderId(order.getOrderId())
 				.customer(order.getCustomer().getCustomerId())
+				.paypalOrderId(order.getPaypalOrderId())
 				.status(order.getStatus());
 			
 	}

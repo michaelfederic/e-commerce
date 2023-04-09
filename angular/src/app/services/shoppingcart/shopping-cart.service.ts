@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CustomerCart } from 'src/app/models/customer-cart';
 import { PayPalOrder } from 'src/app/models/paypalorder';
 import { Product } from 'src/app/models/product';
 
@@ -11,10 +12,10 @@ export class ShoppingCartService {
 
   checkIfShoppingCartExists(){
     //create a shoppingCart inside session storage
-    if(!sessionStorage.getItem('shoppingCart')){
+    if(!localStorage.getItem('shoppingCart')){
       var shoppingCart: Product[] = [];
-      sessionStorage.setItem('shoppingCart',JSON.stringify(shoppingCart))
-      sessionStorage.setItem('totalCost', '0');
+      localStorage.setItem('shoppingCart',JSON.stringify(shoppingCart))
+      localStorage.setItem('totalCost', '0');
     }
   }
 
@@ -39,13 +40,13 @@ export class ShoppingCartService {
         }
     }
     //update shopping cart
-    sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+    localStorage.setItem('shoppingCart', JSON.stringify(cart));
   }
 
   loadShoppingCart(){
 
     //set shopping cart
-    const cartString =sessionStorage.getItem('shoppingCart');
+    const cartString =localStorage.getItem('shoppingCart');
     
     if(cartString){
       
@@ -86,10 +87,10 @@ export class ShoppingCartService {
       const totalCost = this.loadTotalCost()- product.price*qty;
 
       //set new total 
-      sessionStorage.setItem('totalCost', String(totalCost));
+      localStorage.setItem('totalCost', String(totalCost));
       
       //set cart
-      sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+      localStorage.setItem('shoppingCart', JSON.stringify(cart));
       
     }
 
@@ -124,7 +125,7 @@ export class ShoppingCartService {
     }
     
     //set updated cart
-    sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+    localStorage.setItem('shoppingCart', JSON.stringify(cart));
 
   }
 
@@ -142,7 +143,7 @@ export class ShoppingCartService {
      }
      
      //set new total 
-     sessionStorage.setItem('totalCost', String(totalCost));
+     localStorage.setItem('totalCost', String(totalCost));
      
      //return total items
      return totalCost;
@@ -156,7 +157,7 @@ export class ShoppingCartService {
       cart = cart.filter(item => item.quantity !==0 );
 
       //update cart
-      sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+      localStorage.setItem('shoppingCart', JSON.stringify(cart));
     }
   }
 

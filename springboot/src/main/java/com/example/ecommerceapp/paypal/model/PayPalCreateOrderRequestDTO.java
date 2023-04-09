@@ -54,9 +54,8 @@ public class PayPalCreateOrderRequestDTO {
   				.stream()
   				.map(productDTO -> PayPalItemDTO.builder()
   									.name(productDTO.getTitle())
-  									.description(productDTO.getDescription())
+  									.description(productDTO.getId()+"-"+productDTO.getDescription())
   									.quantity(productDTO.getQuantity())
-  									.image(productDTO.getImage())
   									.unit_amount(
   											PayPalUnitAmountDTO.builder()
   											.currency_code(currency_code)

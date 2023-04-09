@@ -1,5 +1,7 @@
 package com.example.ecommerceapp.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ecommerceapp.model.CustomerDTO;
+import com.example.ecommerceapp.model.OrderDTO;
 import com.example.ecommerceapp.paypal.model.PayPalCreateOrderResponseDTO;
 import com.example.ecommerceapp.paypal.service.PayPalService;
 import com.example.ecommerceapp.service.EcommerceService;
@@ -46,6 +49,11 @@ public class CustomerController {
 	@GetMapping("/orderdetails/{orderId}")
 	public ResponseEntity<PayPalCreateOrderResponseDTO> getOrderdetails(@PathVariable String orderId) {
 		return ResponseEntity.ok().body(paypalService.getOrderDetails(orderId));
+	}
+	
+	@GetMapping("/getmyorders")
+	public ResponseEntity<List<OrderDTO>> getOrders(){
+		return ResponseEntity.ok().body(ecommerceService.getOrders());
 	}
 	
 }

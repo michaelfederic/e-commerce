@@ -20,6 +20,7 @@ import com.example.ecommerceapp.entity.OrderStatus;
 import com.example.ecommerceapp.exception.CustomerException;
 import com.example.ecommerceapp.exception.ResourceNotFoundException;
 import com.example.ecommerceapp.model.CustomerDTO;
+import com.example.ecommerceapp.model.OrderDTO;
 import com.example.ecommerceapp.model.ProductDTO;
 import com.example.ecommerceapp.model.RegisterCustomerDTO;
 import com.example.ecommerceapp.model.ResponseMessage;
@@ -100,6 +101,21 @@ public class EcommerceServiceImpl implements EcommerceService{
 		
 		// Convert entity to dto then build instance of CustomerDTO class since it is in CustomerDTOBuilder format
 		return CustomerDTO.entityToDto(customer).build();
+	}
+	
+	public List<OrderDTO> getOrders(){
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Optional<Customer> customer = customerRepository.findByUsername(username);
+		List<Order> orders = new ArrayList<>();
+		if(customer.isPresent()) {
+			orders = orderRepository.findAllByCustomer(customer.get());
+		}
+		
+		return orders.stream()
+				.map(order-> OrderDTO.entityToDto(order).build())
+				.toList();
+				
+		
 	}
 
 }
